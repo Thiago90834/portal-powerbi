@@ -1,0 +1,1010 @@
+/*
+ * ========================================
+ * ESTILO GERAL E RESET
+ * ========================================
+ */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  background-color: #f8f9fa;
+  display: flex;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* === ESTILO DA TELA DE LOGIN === */
+
+.login-body {
+  background-color: #2c3e50;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  width: 340px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.login-container h1 {
+  color: #007bff;
+  margin-bottom: 5px;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.login-container p {
+  color: #777;
+  margin-bottom: 30px;
+  font-size: 15px;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.login-container input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.remember-me-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.remember-me-container input[type="checkbox"] {
+  accent-color: #007bff;
+  width: 15px;
+  height: 15px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.remember-me-container label {
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+
+.login-container button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.login-container button:hover {
+  background-color: #0056b3;
+}
+
+.login-container button:active {
+  transform: translateY(1px);
+}
+
+#erro-login {
+  margin-top: 15px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/*
+ * ========================================
+ * ESTILO DO PORTAL (SIDEBAR E CONTEÚDO)
+ * ========================================
+ */
+
+/* Variáveis para controlar o tamanho e cor da Sidebar */
+
+:root {
+  --sidebar-width-expanded: 240px;
+  --sidebar-width-compact: 70px;
+  --sidebar-color: #2c3e50; /* AZUL ESCURO CORRIGIDO */
+  --transition-speed: 0.3s;
+}
+
+.sidebar {
+  width: var(--sidebar-width-expanded);
+  height: 100vh;
+  background: var(--sidebar-color);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  transition: width var(--transition-speed) ease;
+  overflow-x: hidden;
+  z-index: 100;
+}
+
+/* Estado Compactado */
+
+.sidebar.compact {
+  width: var(--sidebar-width-compact);
+}
+
+.sidebar-header {
+  width: 100%;
+  /* Aumentando o padding vertical para dar mais altura */
+  padding: 15px 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+  /* Adiciona uma altura mínima para o header */
+  min-height: 70px;
+}
+
+.sidebar-header .toggle-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  padding: 0 15px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.sidebar-header .toggle-button:hover {
+  color: #f0f0f0;
+}
+
+.sidebar-header .logo {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  /* Centraliza o logo horizontalmente */
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Ajusta o padding do botão de toggle no modo compacto */
+
+.sidebar.compact .sidebar-header .toggle-button {
+  padding: 0 10px;
+}
+
+/* Garante que o container do logo use o máximo do espaço disponível no modo compacto */
+
+.sidebar.compact .sidebar-header .logo {
+  flex-grow: 1;
+  justify-content: center;
+  padding-right: 10px;
+}
+
+.sidebar .logo img {
+  /* Define o tamanho base para o modo expandido */
+  width: 150px;
+  /* Altura automática para manter a proporção */
+  height: auto;
+  /* Garante que a imagem se ajuste sem ser cortada */
+  object-fit: contain;
+  /* SEM FILTRO DE COR - MANTÉM A COR ORIGINAL DA LOGO */
+  filter: none;
+  transition: all var(--transition-speed) ease;
+  margin: 0;
+}
+
+/* AJUSTE: Oculta a tag <img> no modo COMPACTO */
+
+.sidebar.compact .logo img {
+  display: none; /* AQUI ESTÁ O AJUSTE PRINCIPAL */
+}
+
+/* AJUSTE: Tamanho e posição para o modo EXPANDIDO */
+
+.sidebar:not(.compact) .logo img {
+  width: 150px;
+  height: auto;
+  margin-left: 10px;
+}
+
+/* Esconde todos os textos no modo compacto */
+
+.sidebar.compact .sidebar-text {
+  display: none;
+}
+
+.sidebar nav {
+  width: 100%;
+  padding: 10px 0;
+}
+
+.sidebar nav a {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: white;
+  text-decoration: none;
+  transition: 0.2s;
+  font-size: 15px;
+  border-left: 4px solid transparent;
+  white-space: nowrap;
+}
+
+/* CORREÇÃO APLICADA AQUI: Aplica o estilo tanto ao span.icon quanto ao novo i do Font Awesome */
+.sidebar nav a .icon,
+.sidebar nav a i {
+  font-size: 20px;
+  min-width: 30px;
+  text-align: left;
+}
+
+.sidebar nav a .sidebar-text {
+  margin-left: 15px;
+}
+
+.sidebar nav a:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.sidebar nav a.active {
+  background-color: #4a698a;
+  font-weight: 600;
+  border-left: 4px solid #ffc107;
+}
+
+/* === CONTEÚDO PRINCIPAL E MARGEM (CORREÇÃO DE LARGURA) === */
+
+.content {
+  margin-left: var(--sidebar-width-expanded);
+  width: calc(100vw - var(--sidebar-width-expanded));
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-speed) ease;
+  min-height: 100vh;
+}
+
+.content.compact-margin {
+  margin-left: var(--sidebar-width-compact);
+  width: calc(100vw - var(--sidebar-width-compact));
+}
+
+/*
+ * ========================================
+ * NOVO ESTILO DO CABEÇALHO (BASEADO NO PRINT)
+ * ========================================
+ */
+
+/* O antigo 'header' (fundo azul escuro) foi substituído por esta estrutura */
+.top-header {
+  background-color: white; /* Fundo branco para toda a área do cabeçalho */
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+}
+
+/* === 1. BARRA SUPERIOR BRANCA (TEMA E USER ACTIONS) === */
+.top-bar-white {
+  width: 100%;
+  padding: 8px 40px;
+  background-color: white;
+  border-bottom: 1px solid #f0f0f0;
+  box-sizing: border-box;
+}
+
+.user-info-bar {
+  display: flex;
+  justify-content: flex-end; /* Alinha o conteúdo à direita */
+  align-items: center;
+  gap: 15px;
+}
+
+.user-menu-wrapper {
+  position: relative; /* Container para o botão de usuário e dropdown */
+}
+
+/* Estilização do botão de usuário (user-button) - Mantido */
+.user-button {
+  background: #007bff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: rgb(255, 255, 255);
+  transition: all 0.2s;
+}
+
+.user-button:hover {
+  background-color: #0056b3;
+}
+
+.user-icon {
+  margin-right: 8px;
+  font-size: 18px;
+  color: white;
+}
+
+#usuario-logado {
+  font-weight: 600;
+  color: white;
+}
+
+/* Estilo do Dropdown (Mantido) */
+.user-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  min-width: 220px;
+  margin-top: 10px;
+  overflow: hidden;
+  z-index: 20;
+  border: 1px solid #eaecee;
+}
+
+.user-dropdown.show {
+  display: block;
+}
+
+.dropdown-email {
+  padding: 12px 15px;
+  margin: 0;
+  font-size: 14px;
+  color: #007bff;
+  border-bottom: 1px solid #eaecee;
+  font-weight: 600;
+}
+
+.user-dropdown a {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.2s;
+  font-size: 15px;
+}
+
+.user-dropdown a:hover {
+  background-color: #f8f9fa;
+  color: #dc3545;
+}
+
+/* Estilo do Botão de Tema */
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+  transition: color 0.2s;
+  padding: 5px;
+  margin-left: 10px;
+}
+
+.theme-toggle:hover {
+  color: #007bff;
+}
+
+/* === 2. BARRA DE BOAS-VINDAS (RETANGULAR, FUNDO CINZA) === */
+.welcome-date-bar {
+  width: 100%;
+  background-color: #f1f4f8; /* Fundo cinza claro */
+  padding: 20px 40px;
+  box-sizing: border-box;
+}
+
+.welcome-date-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.welcome-text {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.current-date {
+  font-size: 14px;
+  color: #666;
+}
+
+/* === 3. BARRA DE AÇÕES/NAVEGAÇÃO HORIZONTAL (RELATÓRIOS/FAVORITOS/PESQUISA) === */
+.main-nav-actions {
+  width: 100%;
+  background-color: white;
+  padding: 10px 40px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  box-sizing: border-box;
+}
+
+.nav-item {
+  cursor: pointer;
+  padding: 10px 0;
+  font-size: 15px;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s, border-bottom 0.2s;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.nav-item:hover {
+  color: #007bff;
+}
+
+.nav-item.active {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  font-weight: 600;
+}
+
+.counter {
+  background-color: #eee;
+  color: #333;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+/* Estilo para a Caixa de Pesquisa */
+.search-box {
+  margin-left: auto; /* Empurra a caixa de pesquisa para a direita */
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 300px; /* Largura fixa */
+}
+
+#report-search {
+  width: 100%;
+  padding: 8px 10px 8px 35px; /* Padding ajustado para o ícone */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+#report-search:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* === ESTILO DA SEÇÃO DE CONTEÚDO PRINCIPAL === */
+
+.content main {
+  padding: 40px;
+  flex-grow: 1;
+}
+
+/* === ESTILO DOS CARDS DE RELATÓRIO === */
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding-top: 10px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  padding: 25px;
+  width: 300px;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid #ffffff;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid #007bff;
+}
+
+.card img {
+  width: 60px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.card h3 {
+  font-size: 17px;
+  color: #2c3e50;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* === ESTILO DA PÁGINA DE RELATÓRIO (VIEW) === */
+
+.relatorio-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px;
+  /* NOVO: Fundo Escuro Fixo (usei a cor da sua Sidebar) */
+  background: #19222b;
+  color: white;
+  /* Sombra para o fundo escuro */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  height: 46px;
+  box-sizing: border-box;
+}
+/* Adiciona margem esquerda ao cabeçalho do Relatório para não ficar por cima da Sidebar */
+
+.relatorio-header.expanded {
+  margin-left: var(--sidebar-width-expanded);
+  width: calc(100vw - var(--sidebar-width-expanded));
+  transition: all var(--transition-speed) ease;
+}
+
+.relatorio-header.compact {
+  margin-left: var(--sidebar-width-compact);
+  width: calc(100vw - var(--sidebar-width-compact));
+  transition: all var(--transition-speed) ease;
+}
+
+.header-left,
+.header-right {
+  min-width: 120px;
+}
+
+.relatorio-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  flex-grow: 1;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* Estilo para o botão "Voltar" */
+
+.header-left button {
+  background: #3f3f3f;
+  color: #ffffff;
+  border: 1px solid #535353;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+/* CORREÇÃO APLICADA AQUI: Aplica o espaçamento à tag <i> do Font Awesome no botão "Voltar" */
+.header-left button i {
+  margin-right: 5px;
+  font-size: 16px; /* Garante que o ícone tenha um bom tamanho */
+}
+
+/* Opcional: Remove a regra antiga que não será mais usada, caso ela tenha sido mantida. */
+.header-left button .icon {
+  display: none; /* Força ocultar o span se ele ainda existir no HTML (limpeza) */
+}
+
+.header-left button:hover {
+  background-color: #232e4d;
+  border-color: #adbdc9;
+}
+
+/* Estilo para os botões da direita (Favoritar e Tela Cheia) */
+
+.header-right {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.header-right .icon-button {
+  background: #3f3f3f;
+  color: #ffffff;
+  border: 1px solid #535353;
+  padding: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.header-right .icon-button:hover {
+  background-color: #232e4d;
+  color: white;
+  border-color: #232e4d;
+}
+
+/* Ajusta a posição e o tamanho do iframe para começar logo ABAIXO do cabeçalho fixo */
+
+#iframeRelatorio {
+  position: absolute;
+  top: 46px;
+  width: 100%;
+  height: calc(100vh - 46px);
+  border: none;
+}
+
+/* === ESTILO PARA OCULTAR BARRA INFERIOR DO POWER BI === */
+
+#mascara-inferior {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 250px;
+  height: 30px;
+  background-color: #f8f9fa;
+  z-index: 1000;
+}
+
+/*
+ * ========================================
+ * ESTILO DO ACORDEÃO (COLLAPSIBLE SECTION)
+ * ========================================
+ */
+
+.acordeon-section {
+  width: 100%;
+  margin-bottom: 30px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.acordeon-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  cursor: pointer;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #e0e0e0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Remove a borda inferior se o conteúdo estiver expandido */
+
+.acordeon-content.show ~ .acordeon-header {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.acordeon-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.acordeon-title .icon {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #007bff; /* Azul para o ícone de relatórios */
+}
+
+.acordeon-arrow {
+  transition: transform 0.3s ease;
+  color: #6c757d;
+}
+
+.acordeon-arrow .icon {
+  font-size: 14px;
+}
+
+/* Rotação da Seta quando o acordeão está FECHADO */
+
+.acordeon-section:not(.expanded) .acordeon-arrow {
+  transform: rotate(0deg);
+}
+
+/* Rotação da Seta quando o acordeão está ABERTO */
+
+.acordeon-section.expanded .acordeon-arrow {
+  transform: rotate(180deg);
+}
+
+.acordeon-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+  flex-direction: row; /* Garante que os cards fiquem em linha */
+  padding: 0 25px; /* Padding zero para sumir */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.acordeon-content.show {
+  /* Valor alto para max-height (deve ser maior que o conteúdo) */
+  max-height: 1000px;
+  padding: 25px;
+}
+
+/* Ajuste nos cards para o novo layout (como no print) */
+
+.cards-container {
+  gap: 20px; /* Reduz o espaçamento entre cards */
+}
+
+.card-powerbi {
+  /* Cards com visual mais limpo, como no seu print */
+  width: 200px;
+  min-height: 150px;
+  background-color: #f4f4f4; /* Cor de fundo mais clara */
+  border: 1px solid #e0e0e0; /* Borda sutil */
+  box-shadow: none; /* Remove a sombra padrão */
+  padding: 20px 15px;
+}
+
+.card-powerbi:hover {
+  transform: none; /* Remove a animação de subir */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra sutil no hover */
+  border: 1px solid #007bff; /* Borda azul no hover para destaque */
+}
+
+.card-powerbi img {
+  width: 50px; /* Ícone um pouco menor */
+  margin-bottom: 10px;
+}
+
+.card-powerbi .card-title {
+  font-size: 14px; /* Título menor e mais discreto */
+  font-weight: 500;
+  color: #333;
+}
+/*
+ * ========================================
+ * DARK MODE STYLES
+ * ========================================
+ * Regras com !important para anular estilos claros persistentes
+ */
+
+/* 1. Cores Base do Dark Mode */
+body.dark-mode {
+  background-color: #121212 !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .content,
+body.dark-mode main,
+body.dark-mode #main-content {
+  background-color: #121212 !important;
+  color: #e0e0e0 !important;
+}
+
+/* 2. Cores da Barra Lateral (Sidebar) */
+body.dark-mode .sidebar {
+  background-color: #1f1f1f !important;
+  border-right: 1px solid #333 !important;
+}
+
+body.dark-mode .sidebar-header {
+  border-bottom-color: #333 !important;
+}
+
+body.dark-mode .sidebar nav a {
+  color: #b0b0b0 !important;
+  border-left-color: transparent !important;
+}
+
+body.dark-mode .sidebar nav a:hover {
+  background-color: #333 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .sidebar nav a.active {
+  background-color: #004d99 !important;
+  color: white !important;
+  border-left-color: #ffc107 !important;
+}
+
+/* 3. Cores do Header (Top) */
+body.dark-mode header {
+  background-color: #1f1f1f !important; /* Escurece o header principal */
+  color: #e0e0e0 !important;
+}
+
+/* NOVO: Barra de Ações do Usuário (garantindo que não fique branca) */
+body.dark-mode .user-menu .user-button {
+  background: #0056b3 !important;
+  color: white !important;
+}
+
+body.dark-mode .user-icon,
+body.dark-mode #usuario-logado {
+  color: white !important;
+}
+
+body.dark-mode .user-dropdown {
+  background-color: #2c2c2c !important;
+  border: 1px solid #444 !important;
+}
+
+body.dark-mode .dropdown-email {
+  color: #b0b0b0 !important;
+  border-bottom: 1px solid #444 !important;
+}
+
+body.dark-mode .user-dropdown a {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .user-dropdown a:hover {
+  background-color: #444 !important;
+}
+
+/* --- CORREÇÕES PARA ELEMENTOS PERSISTENTEMENTE CLAROS (Welcome/Data e Search) --- */
+
+/* Se existirem, força o fundo escuro nessas barras (Welcome/Date Bar) */
+body.dark-mode .welcome-date-bar {
+  background-color: #2c2c2c !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .welcome-text,
+body.dark-mode .current-date {
+  color: #e0e0e0 !important;
+}
+
+/* Se existirem, força o fundo escuro na Pesquisa (Search Box) */
+body.dark-mode .search-box {
+  background-color: transparent !important;
+}
+
+body.dark-mode .search-box input {
+  background-color: #333 !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #444 !important;
+}
+
+body.dark-mode .search-box input::placeholder {
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode .search-icon {
+  color: #a0a0a0 !important;
+}
+/* ------------------------------------------------------------------------------------- */
+
+/* 4. Cores do Acordeão */
+body.dark-mode .acordeon-section {
+  background-color: #1f1f1f !important;
+  border-color: #333 !important;
+}
+
+body.dark-mode .acordeon-header {
+  background-color: #2c2c2c !important;
+  color: #e0e0e0 !important;
+  border-bottom: 1px solid #444 !important;
+}
+
+body.dark-mode .acordeon-title {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .acordeon-title .icon {
+  color: #0099ff !important;
+}
+
+body.dark-mode .acordeon-arrow {
+  color: #b0b0b0 !important;
+}
+
+/* 5. Cores dos Cards */
+body.dark-mode .card,
+body.dark-mode .card-powerbi {
+  background-color: #2c2c2c !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #444 !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode .card:hover,
+body.dark-mode .card-powerbi:hover {
+  background-color: #3a3a3a !important;
+  border-color: #007bff !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .card h3,
+body.dark-mode .card-powerbi .card-title {
+  color: #e0e0e0 !important;
+}
+
+/* 6. Outros Elementos */
+body.dark-mode #sem-favoritos {
+  color: #b0b0b0 !important;
+}
+body.dark-mode .top-header {
+  background-color: #1f1f1f !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* CORREÇÃO: Força o fundo escuro da barra superior (Tema e User Actions) */
+body.dark-mode .top-bar-white {
+  background-color: #1f1f1f !important;
+  border-bottom: 1px solid #333 !important;
+}
+
+body.dark-mode .user-info-bar {
+  background-color: #1f1f1f !important;
+}
+
+/* Garante que o ícone de tema fique claro */
+body.dark-mode .theme-toggle {
+  color: #e0e0e0 !important;
+}
+
+/* NOVO: CORREÇÃO DA BARRA DE NAVEGAÇÃO HORIZONTAL (Relatórios/Favoritos/Pesquisa) */
+body.dark-mode .main-nav-actions {
+  background-color: #1f1f1f !important; /* Fundo escuro */
+  border-bottom: 1px solid #333 !important;
+}
+
+body.dark-mode .nav-item {
+  color: #b0b0b0 !important; /* Texto claro */
+}
+
+body.dark-mode .nav-item.active {
+  color: white !important;
+  border-bottom-color: #007bff !important;
+}

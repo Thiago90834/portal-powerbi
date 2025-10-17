@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Login - Portal Sotrigo</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="login-body">
+    <div class="login-container">
+      <h1>Portal Sotrigo</h1>
+
+      <p>Acesse seus relatórios Power BI</p>
+
+      <form onsubmit="return fazerLogin(event)">
+        <input type="text" id="usuario" placeholder="Usuário" required />
+
+        <input type="password" id="senha" placeholder="Senha" required />
+
+        <div class="remember-me-container">
+          <input type="checkbox" id="lembrarSenha" />
+
+          <label for="lembrarSenha">Lembrar usuário e senha</label>
+        </div>
+
+        <button type="submit">Entrar</button>
+
+        <p id="erro-login"></p>
+      </form>
+    </div>
+
+    <script>
+      // --- VERIFICAÇÃO DE SESSÃO ATIVA AO CARREGAR O LOGIN ---
+
+      // Se o perfil do usuário existir no localStorage, redireciona diretamente para o portal.
+
+      if (localStorage.getItem("userProfile")) {
+        window.location.href = "portal.html";
+      }
+
+      // Dicionário de usuários (Simulação de banco de dados)
+
+      const usuarios = {
+        // ... (Mantenha todo o seu objeto de usuários com todas as URLs aqui) ...
+
+        admin: {
+          senha: "1234",
+
+          perfil: "ADMIN",
+
+          rca_url:
+            "https://app.powerbi.com/view?r=eyJrIjoiYzFlOTdkNzUtNzg0NS00YzVhLWI2NTEtYWU5MmZkZWI3NzAyIiwidCI6ImU4YWQ3NmU2LTk2ZjAtNGExOC1hMzYwLWYzOTI2M2QwYTUxOCJ9",
+        },
+
+        // NOVO USUÁRIO DA INDÚSTRIA
+
+        "jerusa@sotrigo.com.br": {
+          senha: "sotrigo102030",
+
+          perfil: "INDUSTRIA",
+
+          rca_url:
+            "https://app.powerbi.com/view?r=eyJrIjoiYzFlOTdkNzUtNzg0NS00YzVhLWI2NTEtYWU5MmZkZWI3NzAyIiwidCI6ImU4YWQ3NmU2LTk2ZjAtNGExOC1hMzYwLWYzOTI2M2QwYTUxOCJ9",
+        },
+
+        "supervisor27@sotrigo.com.br": {
+          senha: "sotrigo102030",
+
+          perfil: "RCA_ONLY",
+
+          rca_url:
+            "https://app.powerbi.com/view?r=eyJrIjoiMGM4YWM0NjQtMGJmMC00MjBlLWE1YmEtNTJiNWE3M2UyYTRiIiwidCI6ImU4YWQ3NmU2LTk2ZjAtNGExOC1hMzYwLWYzOTI2M2QwYTUxOCJ9",
+        },
+
+        "supervisor30@sotrigo.com.br": {
+          senha: "sotrigo102030",
+
+          perfil: "RCA_ONLY",
+
+          rca_url:
+            "https://app.powerbi.com/view?r=eyJrIjoiY2QyYjZlZjMtNTE4Ni00YjgwLWJjNjMtODQ3ZjZjNTlmOTY3IiwidCI6ImU4YWQ3NmU2LTk2ZjAtNGExOC1hMzYwLWYzOTI2M2QwYTUxOCJ9",
+        },
+
+        "supervisor33@sotrigo.com.br": {
+          senha: "sotrigo102030",
+
+          perfil: "RCA_ONLY",
+
+          rca_url:
+            "https://app.powerbi.com/view?r=eyJrIjoiZTg0YzBiNmYtYjNiYi00OGU3LWJkZTctMWEzYWI2ZTllNGFjIiwidCI6ImU4YWQ3NmU2LTk2ZjAtNGExOC1hMzYwLWYzOTI2M2QwYTUxOCJ9",
+        },
+
+        "supervisor36@sotrigo.com.br": {
+          senha: "sotrigo102030",
+
+          perfil: "RCA_ONLY",
+
+          rca_url:
+            "https://app.powerbi.com/view?r=eyJrIjoiOTVkNDkwNDAtYmJmOS00MjA2LWI2MjAtZDU4MTI3NWEyZTMxIiwidCI6ImU4YWQ3NmU2LTk2ZjAtNGExOC1hMzYwLWYzOTI2M2QwYTUxOCJ9",
+        },
+
+        "supervisor38@sotrigo.com.br": {
+          senha: "sotrigo102030",
+
+          perfil: "RCA_ONLY",
+
+          rca_url:
+            "https://app.powerbi.com/view?r=eyJrIjoiMDM5YzQwMzgtMzUwZC00YjQ3LTkyOTUtZTg1MDY3NDRhODc3IiwidCI6ImU4YWQ3NmU2LTk2ZjAtNGExOC1hMzYwLWYzOTI2M2QwYTUxOCJ9",
+        },
+
+        "supervisor40@sotrigo.com.br": {
+          senha: "sotrigo102030",
+
+          perfil: "RCA_ONLY",
+
+          rca_url:
+            "https://app.powerbi.com/view?r=eyJrIjoiMTQxZWM4OWEtNzJiNy00Y2QwLWI1MGItNDg5YjU4MWU0MjExIiwidCI6ImU4YWQ3NmU2LTk2ZjAtNGExOC1hMzYwLWYzOTI2M2QwYTUxOCJ9",
+        },
+      };
+
+      // Função para carregar credenciais salvas ao carregar a página
+
+      window.onload = function () {
+        const savedUser = localStorage.getItem("rememberedUser");
+
+        const savedPass = localStorage.getItem("rememberedPass");
+
+        const rememberChecked = localStorage.getItem("rememberMeChecked");
+
+        if (savedUser && savedPass) {
+          document.getElementById("usuario").value = savedUser;
+
+          document.getElementById("senha").value = savedPass;
+        }
+
+        if (rememberChecked === "true") {
+          document.getElementById("lembrarSenha").checked = true;
+        }
+      };
+
+      function fazerLogin(event) {
+        event.preventDefault();
+
+        const usuario = document.getElementById("usuario").value;
+
+        const senha = document.getElementById("senha").value;
+
+        const erro = document.getElementById("erro-login");
+
+        const lembrarSenhaCheckbox = document.getElementById("lembrarSenha");
+
+        if (usuarios[usuario] && usuarios[usuario].senha === senha) {
+          // Lógica de Salvar/Remover Credenciais
+
+          if (lembrarSenhaCheckbox.checked) {
+            localStorage.setItem("rememberedUser", usuario);
+
+            localStorage.setItem("rememberedPass", senha);
+
+            localStorage.setItem("rememberMeChecked", true);
+          } else {
+            localStorage.removeItem("rememberedUser");
+
+            localStorage.removeItem("rememberedPass");
+
+            localStorage.setItem("rememberMeChecked", false);
+          }
+
+          // Lógica de Manter Sessão Conectada
+
+          localStorage.setItem("userProfile", usuarios[usuario].perfil);
+
+          localStorage.setItem("loggedInUser", usuario);
+
+          localStorage.setItem("rcaUrl", usuarios[usuario].rca_url);
+
+          window.location.href = "portal.html";
+        } else {
+          erro.textContent = "Usuário ou senha incorretos.";
+
+          erro.style.color = "red";
+        }
+      }
+    </script>
+  </body>
+</html>

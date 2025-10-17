@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Portal SOTRIGO</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <button class="toggle-button" onclick="toggleSidebar()">
+          <span class="icon">☰</span>
+        </button>
+
+        <div class="logo">
+          <img
+            src="https://i.ibb.co/3YNJ7FFV/Logo-Sotrigo-Azul.png"
+            alt="Logo Sotrigo"
+          />
+        </div>
+      </div>
+      <nav>
+        <a href="#" class="active" onclick="mostrarAba('inicio', this)">
+          <span class="icon"><i class="fas fa-home"></i></span>
+
+          <span class="sidebar-text">Início</span>
+        </a>
+
+        <a href="#" onclick="mostrarAba('favoritos', this)">
+          <i class="fa-solid fa-star"></i>
+
+          <span class="sidebar-text">Favoritos</span>
+        </a>
+      </nav>
+    </aside>
+
+    <div class="content" id="main-content">
+      <header class="top-header">
+        <div class="top-bar-white">
+          <div class="user-info-bar">
+            <div class="user-menu-wrapper">
+              <button class="user-button" onclick="toggleUserMenu()">
+                <i class="fa-solid fa-circle-user"></i>
+                <span id="usuario-logado"></span>
+              </button>
+              <div class="user-dropdown" id="userDropdown">
+                <p class="dropdown-email" id="dropdown-email-menu"></p>
+                <a href="#" onclick="fazerLogout()">
+                  <i class="fa-solid fa-right-from-bracket"></i> Sair
+                </a>
+              </div>
+            </div>
+
+            <div class="user-actions-bar">
+              <button
+                class="theme-toggle"
+                onclick="toggleTheme()"
+                title="Alternar tema"
+              >
+                <i class="fas fa-sun" id="theme-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="welcome-date-bar">
+          <div class="welcome-date-content">
+            <div class="welcome-text">
+              Bem-Vindo(a), <span id="welcome-username"></span>
+            </div>
+            <div class="current-date" id="current-date"></div>
+          </div>
+        </div>
+
+        <nav class="main-nav-actions" id="main-nav-actions">
+          <div
+            class="nav-item active"
+            id="nav-relatorios"
+            onclick="mostrarAba('inicio')"
+          >
+            Relatórios <span class="counter" id="relatorios-count">0</span>
+          </div>
+          <div
+            class="nav-item"
+            id="nav-favoritos"
+            onclick="mostrarAba('favoritos')"
+          >
+            Favoritos <span class="counter" id="favoritos-count">0</span>
+          </div>
+
+          <div class="search-box">
+            <input
+              type="text"
+              id="report-search"
+              placeholder="Pesquisar Relatório..."
+              oninput="filtrarRelatoriosPorNome()"
+            />
+            <i class="fas fa-search search-icon"></i>
+          </div>
+        </nav>
+      </header>
+      <main>
+        <section id="relatorios-acordeon" class="acordeon-section">
+          <div
+            class="acordeon-header"
+            onclick="toggleAcordeon('relatorios-acordeon')"
+          >
+            <h2 class="acordeon-title">
+              <i class="fa-solid fa-database"></i>
+              Relatórios Power BI
+            </h2>
+
+            <span class="acordeon-arrow" id="relatorios-acordeon-arrow">
+              <i class="fa-solid fa-arrow-up"></i>
+            </span>
+          </div>
+
+          <div id="aba-inicio" class="cards-container acordeon-content show">
+            <div
+              class="card card-powerbi"
+              onclick="abrirRCA('Análise Semanal')"
+              data-perfil="ADMIN,RCA_ONLY"
+              data-nome-relatorio="Análise Semanal"
+            >
+              <img
+                src="https://www.doutoresdoexcel.com.br/wp-content/uploads/2017/02/social-default-image.png"
+                alt="Ícone Power BI"
+              />
+
+              <h3 class="card-title">Análise Semanal</h3>
+            </div>
+
+            <div
+              class="card card-powerbi"
+              onclick="abrirRelatorio('Estoque Reservado', 'https://app.powerbi.com/view?r=eyJrIjoiYmQ4MjZjYmItZTIyOS00NzdlLTk5ODgtMmE0NTUwZTk2YzdkIiwidCI6ImU4YWQ3NmU2LTk2ZjAtNGExOC1hMzYwLWYzOTI2M2QwYTUxOCJ9')"
+              data-perfil="ADMIN,INDUSTRIA"
+              data-nome-relatorio="Estoque Reservado"
+            >
+              <img
+                src="https://www.doutoresdoexcel.com.br/wp-content/uploads/2017/02/social-default-image.png"
+                alt="Ícone Power BI"
+              />
+
+              <h3 class="card-title">Estoque Reservado</h3>
+            </div>
+
+            <div
+              class="card card-powerbi"
+              onclick="abrirRelatorio('Solicitações de Compras', 'https://app.powerbi.com/view?r=eyJrIjoiNWM3NzI2MTEtMDI5OS00MGM0LTkxNGYtNWMwZDgwNGZlNDRkIiwidCI6ImU4YWQ3NmU2LTk2ZjAtNGExOC1hMzYwLWYzOTI2M2QwYTUxOCJ9')"
+              data-perfil="ADMIN"
+              data-nome-relatorio="Solicitações de Compras"
+            >
+              <img
+                src="https://www.doutoresdoexcel.com.br/wp-content/uploads/2017/02/social-default-image.png"
+                alt="Ícone Power BI"
+              />
+
+              <h3 class="card-title">Solicitações de Compras</h3>
+            </div>
+
+            <div
+              class="card card-powerbi"
+              onclick="abrirRelatorio('Margem de Lucro sobre Vendas', 'https://app.powerbi.com/view?r=eyJrIjoiZTNiMzQzNjEtN2ZlZi00OTE4LTkyZDQtNDgzYzIyYjA5OTJiIiwidCI6ImU4YWQ3NmU2LTk2ZjAtNGExOC1hMzYwLWYzOTI2M2QwYTUxOCJ9')"
+              data-perfil="ADMIN"
+              data-nome-relatorio="Margem de Lucro sobre Vendas"
+            >
+              <img
+                src="https://www.doutoresdoexcel.com.br/wp-content/uploads/2017/02/social-default-image.png"
+                alt="Ícone Power BI"
+              />
+
+              <h3 class="card-title">Margem de Lucro sobre Vendas</h3>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="aba-favoritos"
+          class="cards-container"
+          style="display: none"
+        >
+          <p id="sem-favoritos">Nenhum relatório favoritado ainda.</p>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
