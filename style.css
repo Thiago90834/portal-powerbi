@@ -1008,3 +1008,128 @@ body.dark-mode .nav-item.active {
   color: white !important;
   border-bottom-color: #007bff !important;
 }
+/* ========================================================
+ * ADIÇÃO DE RESPONSIVIDADE PARA DISPOSITIVOS MÓVEIS
+ * (max-width: 768px)
+ * ======================================================== */
+@media (max-width: 768px) {
+  /* 1. LAYOUT PRINCIPAL (Sidebar e Conteúdo) */
+
+  /* A. Sidebar como Overlay (Menu Hamburger) */
+  /* Garante que o conteúdo não tenha margem fixa, ocupando 100% da tela */
+  .content,
+  .content.compact-margin {
+    margin-left: 0 !important;
+    width: 100vw !important;
+    overflow-x: hidden;
+  }
+
+  /* Define a Sidebar para começar escondida (largura 0) */
+  .sidebar {
+    width: 0 !important;
+    left: 0;
+    z-index: 1000; /* Garante que fique acima de todo o conteúdo */
+  }
+
+  /* O JavaScript usa a classe '.compact' para "abrir" o menu.
+       Ajustamos a largura para um tamanho menor no mobile (ex: 200px) */
+  .sidebar.compact {
+    width: 200px !important;
+  }
+
+  /* B. Ajuste do Botão de Toggle (☰) */
+  /* O botão de toggle deve ser fixo e visível, mesmo que o menu esteja fechado. */
+  .sidebar-header .toggle-button {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 50px;
+    background-color: var(--sidebar-color);
+    z-index: 1001;
+  }
+
+  /* Ajusta a sidebar-header para dar espaço ao botão fixo */
+  .sidebar-header {
+    padding-top: 50px;
+  }
+
+  /* Oculta o logo e o texto da sidebar no modo mobile para economizar espaço */
+  .sidebar .logo,
+  .sidebar:not(.compact) .sidebar-text {
+    display: none !important;
+  }
+
+  /* 2. HEADER */
+
+  /* Adiciona padding no lado esquerdo do header para não colidir com o botão de menu (☰) */
+  .top-bar-white,
+  .welcome-date-bar,
+  .main-nav-actions {
+    padding-left: 60px;
+    padding-right: 15px;
+  }
+
+  /* Empilhamento de data/saudação */
+  .welcome-date-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Barra de Navegação Horizontal (Relatórios/Favoritos) */
+  .main-nav-actions {
+    flex-direction: column; /* Empilha os itens verticalmente */
+    align-items: flex-start;
+  }
+
+  .nav-item {
+    width: 100%;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+
+  /* Caixa de pesquisa em largura total e movida para o final */
+  .search-box {
+    width: 100%;
+    order: 10;
+    margin-top: 10px;
+  }
+
+  /* 3. CONTEÚDO (Cards) */
+
+  /* Adiciona um pequeno padding lateral no conteúdo */
+  main {
+    padding: 0 15px;
+  }
+
+  /* Transforma os cards em uma coluna única */
+  .cards-container {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center; /* Centraliza os cards */
+  }
+
+  .card {
+    width: 100%;
+    max-width: 350px; /* Limite de largura para tablets menores */
+  }
+
+  /* 4. TELA DE RELATÓRIO (relatorio.html) */
+  .relatorio-header {
+    flex-wrap: wrap; /* Permite a quebra de linha no cabeçalho */
+    padding: 10px 15px;
+  }
+
+  /* Ajusta o título do relatório */
+  .relatorio-header h2 {
+    font-size: 16px;
+    order: 10;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  /* Garante que o iframe de relatório use a altura máxima */
+  #iframeRelatorio {
+    height: calc(100vh - 65px);
+  }
+}
