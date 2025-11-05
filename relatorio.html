@@ -14,6 +14,22 @@
     />
 
     <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Esta classe será adicionada dinamicamente pelo JS para forçar o Fullscreen no iOS */
+      .fullscreen-active {
+        overflow: hidden !important;
+      }
+      .fullscreen-active #iframeRelatorio {
+        top: 0 !important;
+        height: 100% !important;
+        width: 100% !important;
+        position: fixed !important;
+        z-index: 9999 !important;
+      }
+      .fullscreen-active .relatorio-header {
+        display: none !important;
+      }
+    </style>
   </head>
 
   <body>
@@ -59,7 +75,11 @@
         window.location.href = "portal.html";
       }
 
-      // NOVO: Função para alternar o modo de Tela Cheia
+      // NOVO: Define as alturas padrão com base no ambiente (Desktop ou Mobile)
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      const HEADER_HEIGHT_DEFAULT = isMobile ? "50px" : "46px";
+      const IFRAME_HEIGHT_DEFAULT = `calc(100vh - ${HEADER_HEIGHT_DEFAULT})`;
+
       function telaCheia() {
         const elem = document.documentElement;
 
@@ -68,10 +88,11 @@
           document.fullscreenElement ||
           document.mozFullScreenElement ||
           document.webkitFullscreenElement ||
-          document.msFullscreenElement;
+          document.msFullscreenElement ||
+          document.body.classList.contains("fullscreen-active");
 
         if (!isFullscreen) {
-          // Ativa o modo de Tela Cheia
+          // 1. Tenta a API nativa
           if (elem.requestFullscreen) {
             elem.requestFullscreen();
           } else if (elem.mozRequestFullScreen) {
@@ -81,8 +102,13 @@
           } else if (elem.msRequestFullscreen) {
             elem.msRequestFullscreen();
           }
+
+          // 2. Se for iOS ou API falhar, força o modo CSS (handleFullscreenChange fará isso)
+          if (!document.fullscreenEnabled && isMobile) {
+            handleFullscreenChange(true);
+          }
         } else {
-          // Sai do modo de Tela Cheia
+          // 1. Tenta sair da API nativa
           if (document.exitFullscreen) {
             document.exitFullscreen();
           } else if (document.mozCancelFullScreen) {
@@ -92,34 +118,62 @@
           } else if (document.msExitFullscreen) {
             document.msExitFullscreen();
           }
+
+          // 2. Se for iOS ou API falhar, força a saída do modo CSS
+          if (
+            !document.exitFullscreen &&
+            document.body.classList.contains("fullscreen-active")
+          ) {
+            handleFullscreenChange(false);
+          }
         }
       }
 
-      // NOVO: Função para lidar com a mudança de estado de Tela Cheia
-      function handleFullscreenChange() {
-        const isFullscreen =
+      // Função para lidar com a mudança de estado de Tela Cheia
+      function handleFullscreenChange(forceState) {
+        let isFullscreen =
           document.fullscreenElement ||
           document.mozFullScreenElement ||
           document.webkitFullscreenElement ||
           document.msFullscreenElement;
+
+        // Se forceState for fornecido, usa ele para o estado
+        if (typeof forceState !== "undefined") {
+          isFullscreen = forceState;
+        }
+
         const header = document.querySelector(".relatorio-header");
         const iframe = document.getElementById("iframeRelatorio");
+        const body = document.body;
 
         if (isFullscreen) {
-          // Oculta o cabeçalho e expande o iframe para 100%
-          header.style.display = "none";
-          iframe.style.top = "0";
-          iframe.style.height = "100vh";
+          // Aplica a classe Fullscreen-Active (usando !important no CSS embutido)
+          body.classList.add("fullscreen-active");
+
+          // Oculta a barra inferior do Power BI (opcional)
+          document.getElementById("mascara-inferior").style.display = "none";
         } else {
-          // Restaura o cabeçalho e o layout padrão
+          // Remove a classe Fullscreen-Active
+          body.classList.remove("fullscreen-active");
+
+          // Restaura as propriedades padrão do iframe e cabeçalho
           header.style.display = "flex";
-          // Valor padrão (46px na versão desktop / 50px no mobile com CSS)
-          iframe.style.top = "46px";
-          iframe.style.height = "calc(100vh - 46px)";
+          iframe.style.top = HEADER_HEIGHT_DEFAULT;
+          iframe.style.height = IFRAME_HEIGHT_DEFAULT;
+          iframe.style.position = "absolute";
+
+          // Restaura a barra inferior do Power BI (opcional)
+          document.getElementById("mascara-inferior").style.display = "block";
+
+          // Hack para forçar a re-renderização (comum em iframes e Power BI)
+          iframe.style.width = "99.9%";
+          setTimeout(() => {
+            iframe.style.width = "100%";
+          }, 10);
         }
       }
 
-      // NOVO: Adiciona os listeners de evento de Tela Cheia para garantir que o layout se ajuste
+      // Adiciona os listeners de evento de Tela Cheia
       document.addEventListener("fullscreenchange", handleFullscreenChange);
       document.addEventListener(
         "webkitfullscreenchange",

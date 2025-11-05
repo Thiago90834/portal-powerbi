@@ -1153,5 +1153,7 @@ body.dark-mode .nav-item.active {
   #iframeRelatorio {
     top: 50px; /* Valor ajustado após permitir o cabeçalho crescer */
     height: calc(100vh - 50px);
+    /* Manter position: absolute no mobile para o layout padrão */
+    position: absolute;
   }
 }
