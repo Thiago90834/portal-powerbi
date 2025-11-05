@@ -1117,6 +1117,8 @@ body.dark-mode .nav-item.active {
   .relatorio-header {
     flex-wrap: wrap; /* Permite a quebra de linha no cabeçalho */
     padding: 10px 15px;
+    height: auto; /* PERMITE CRESCER */
+    min-height: 50px;
   }
 
   /* Ajusta o título do relatório */
@@ -1125,11 +1127,31 @@ body.dark-mode .nav-item.active {
     order: 10;
     width: 100%;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 5px; /* Reduz a margem para evitar muito espaço */
+    margin-bottom: 5px;
+    white-space: normal; /* PERMITE QUEBRA DE LINHA */
   }
 
-  /* Garante que o iframe de relatório use a altura máxima */
+  /* NOVO: Reposiciona os botões (Voltar, Favoritar, Tela Cheia) para ficarem na mesma linha */
+  .header-left,
+  .header-right {
+    min-width: unset; /* Remove a largura mínima no mobile */
+    flex-grow: 1;
+  }
+
+  .header-left {
+    justify-content: flex-start;
+    order: 1;
+  }
+
+  .header-right {
+    justify-content: flex-end;
+    order: 2;
+  }
+
+  /* Garante que o iframe de relatório use a altura máxima (Ajustado) */
   #iframeRelatorio {
-    height: calc(100vh - 65px);
+    top: 50px; /* Valor ajustado após permitir o cabeçalho crescer */
+    height: calc(100vh - 50px);
   }
 }
