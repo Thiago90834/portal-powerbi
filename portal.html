@@ -8,6 +8,12 @@
 
     <title>Portal SOTRIGO</title>
 
+    <script>
+      // Verifica a sessão imediatamente. Se não houver, redireciona para o login.
+      if (!localStorage.getItem("userProfile")) {
+        window.location.href = "index.html";
+      }
+    </script>
     <link rel="stylesheet" href="style.css" />
     <link
       rel="stylesheet"

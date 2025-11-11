@@ -93,17 +93,14 @@ function toggleTheme() {
 }
 
 // =======================================================
-// LÓGICA DE PERMISSÃO E FILTRAGEM
+// LÓGICA DE PERMISSÃO E FILTRAGEM (Verificação de sessão removida daqui)
 // =======================================================
 
 function filtrarRelatoriosPorPermissao() {
   const userProfile = localStorage.getItem("userProfile");
   const loggedInUser = localStorage.getItem("loggedInUser");
 
-  if (!userProfile || !loggedInUser) {
-    window.location.href = "index.html";
-    return;
-  }
+  // A verificação de sessão foi movida para o topo de portal.html
 
   // ATUALIZA O CABEÇALHO COM O NOME/EMAIL DO USUÁRIO
   updateHeaderInfo(loggedInUser);

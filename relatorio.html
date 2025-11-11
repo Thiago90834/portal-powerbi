@@ -62,6 +62,14 @@
     <div id="mascara-inferior"></div>
 
     <script>
+      // NOVO: SESSION GUARD para RELATORIO.HTML
+      // Verifica a sessão imediatamente. Se não houver, redireciona para o login.
+      const userProfileCheck = localStorage.getItem("userProfile");
+      if (!userProfileCheck) {
+        window.location.href = "index.html";
+      }
+      // FIM DO SESSION GUARD
+
       const params = new URLSearchParams(window.location.search);
       const titulo = params.get("titulo");
       const url = params.get("url");
